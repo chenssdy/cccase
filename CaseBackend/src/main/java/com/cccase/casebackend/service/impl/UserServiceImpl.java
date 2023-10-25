@@ -151,7 +151,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     public UserVo getUser() {
-        return null;
+        User user = userMapper.selectById(MDC.get("userId"));
+
+        List<UserBackpackVo> userBackpackVos = userMapper.getUserAccs(user.getId());
+
+        UserVo userVo = new UserVo(user);
+
+        userVo.setUserBackpackVos(userBackpackVos);
+
+        return userVo;
     }
 
     @Synchronized
