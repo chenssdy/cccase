@@ -1,0 +1,65 @@
+server:
+  port: 8081
+
+thread-pool:
+  core-pool-size: 5
+  thread-pool-name: 'cn.chendys'
+  maximum-pool-size: 10
+  watting-count: 20
+  keep-alive-time: 10
+
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout: 8640000
+    client-type: lettuce
+    lettuce:
+      pool:
+        enabled: true
+  datasource:
+    druid:
+      username: root
+#      password: '*917D8835B69F2CBA97FF0EEB85116BA736F02C09'
+      password: chenssdy
+      url: jdbc:mysql://localhost:3306/cc_case?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      # 初始化时建立物理连接的个数
+      initial-size: 5
+      # 连接池最小连接数
+      min-idle: 5
+      # 连接池最大连接数
+      max-active: 50
+      # 获取连接时最大等待时间，单位毫秒
+      max-wait: 30000
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/, classpath:/public/
+mybatis-plus:
+  #MyBatis Mapper 所对应的 XML 文件位置
+  mapperLocations:
+    - classpath:mapper/*.xml
+    - classpath*:com/**/mapper/*.xml
+  global-config:
+    #是否控制台 print mybatis-plus 的 LOGO
+    banner: false
+    #是否初始化 SqlRunner(com.baomidou.mybatisplus.extension.toolkit.SqlRunner)
+    enableSqlRunner: false
+  configuration:
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 分页插件
+    interceptor: com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor
+    # 分页插件配置
+    properties:
+      overflow: false
+
+logging:
+  config: classpath:log4j2.xml

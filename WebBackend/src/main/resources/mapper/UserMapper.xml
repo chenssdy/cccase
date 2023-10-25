@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chendys.webbackend.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.chendys.webbackend.pojo.User">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="lv" column="lv" jdbcType="INTEGER"/>
+            <result property="rechargeAmount" column="recharge_amount" jdbcType="DECIMAL"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="pageResultMap" type="com.chendys.webbackend.pojo.vo.UserVo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="lv" column="lv" jdbcType="INTEGER"/>
+        <result property="rechargeAmount" column="recharge_amount" jdbcType="DECIMAL"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <collection property="accessories" ofType="com.chendys.webbackend.pojo.Accessories">
+            <id property="id" column="aid" jdbcType="INTEGER"/>
+            <result property="name" column="aname" jdbcType="VARCHAR"/>
+            <result property="imgUrl" column="img_url" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="wear" column="wear" jdbcType="INTEGER"/>
+            <result property="buffId" column="buff_id" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,phone,
+        password,lv,recharge_amount,
+        status,update_time,create_time
+    </sql>
+
+    <select id="getPage" resultType="com.chendys.webbackend.pojo.vo.UserVo" resultMap="pageResultMap">
+        select tu.id, tu.name, tu.phone, tu.password, tu.lv, tu.recharge_amount, tu.status, tu.update_time,
+               tu.create_time,ta.id aid , ta.name aname, ta.img_url, ta.price, ta.wear, ta.buff_id
+        from tb_user tu
+        left join tb_user_backpack tub
+            on tu.id = tub.user_id
+        left join tb_accessories ta
+            on ta.id = tub.accessories_id
+        limit ${offset}, ${num}
+    </select>
+</mapper>

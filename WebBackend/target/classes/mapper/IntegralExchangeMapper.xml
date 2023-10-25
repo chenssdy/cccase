@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chendys.webbackend.mapper.IntegralExchangeMapper">
+
+    <resultMap id="BaseResultMap" type="com.chendys.webbackend.pojo.IntegralExchange">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="accessoriesId" column="accessories_id" jdbcType="INTEGER"/>
+            <result property="stock" column="stock" jdbcType="INTEGER"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="VoResultMap" type="com.chendys.webbackend.pojo.vo.IntegralExchangeVo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="accessoriesId" column="accessories_id" jdbcType="INTEGER"/>
+        <result property="stock" column="stock" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <association property="accessories" javaType="com.chendys.webbackend.pojo.Accessories">
+            <id property="id" column="aid"  jdbcType="INTEGER"/>
+            <result property="name" column="aname" jdbcType="VARCHAR"/>
+            <result property="imgUrl" column="aimg_url" jdbcType="VARCHAR"/>
+            <result property="price" column="aprice" jdbcType="DECIMAL"/>
+            <result property="wear" column="awear" jdbcType="INTEGER"/>
+            <result property="buffId" column="abuff_id" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,accessories_id,stock,
+        status,update_time,create_time
+    </sql>
+
+    <insert id="addIE" useGeneratedKeys="true" keyProperty="id" >
+        insert into tb_integral_exchange(accessories_id, stock, status) values (${dto.accessoriesId}, ${dto.stock}, ${dto.status});
+    </insert>
+
+    <select id="getPage" resultType="com.chendys.webbackend.pojo.vo.IntegralExchangeVo" resultMap="VoResultMap">
+        SELECT tie.id, tie.accessories_id, tie.stock, tie.status, tie.update_time, tie.create_time, ta.id aid, ta.name aname, ta.img_url aimg_url, ta.price aprice, ta.wear awear, ta.buff_id abuff_id
+        FROM `tb_integral_exchange` tie
+             left join tb_accessories ta
+                   on tie.accessories_id = ta.id
+        where 1 = 1
+        <if test="status != null and status != 0">
+            and status = ${status}
+        </if>
+        limit ${offset}, ${num}
+    </select>
+</mapper>

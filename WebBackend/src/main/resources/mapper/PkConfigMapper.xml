@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chendys.webbackend.mapper.PkConfigMapper">
+
+    <resultMap id="BaseResultMap" type="com.chendys.webbackend.pojo.PkConfig">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="singlePlayerMinCase" column="single_player_min_case" jdbcType="INTEGER"/>
+            <result property="singlePlayerMaxCase" column="single_player_max_case" jdbcType="INTEGER"/>
+            <result property="doublePlayerMinCase" column="double_player_min_case" jdbcType="INTEGER"/>
+            <result property="doublePlayerMaxCase" column="double_player_max_case" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,single_player_min_case,single_player_max_case,
+        double_player_min_case,double_player_max_case,update_time,
+        create_time
+    </sql>
+</mapper>

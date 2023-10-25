@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cccase.casebackend.mapper.AccessoriesMapper">
+
+    <resultMap id="BaseResultMap" type="com.cccase.casebackend.pojo.Accessories">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="imgUrl" column="img_url" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="wear" column="wear" jdbcType="INTEGER"/>
+            <result property="quality" column="quality" jdbcType="INTEGER"/>
+            <result property="buffId" column="buff_id" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="VoResultMap" type="com.cccase.casebackend.pojo.vo.AccessoriesVo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
+        <result property="wear" column="wear" jdbcType="INTEGER"/>
+        <result property="probability" column="probability" jdbcType="DECIMAL"/>
+        <result property="quality" column="quality" jdbcType="INTEGER"/>
+        <result property="buffId" column="buff_id" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id,name,img_url,
+        price,wear,buff_id,
+        update_time,create_time
+    </sql>
+
+
+    <select id="getCaseAccessoriesById" resultType="com.cccase.casebackend.pojo.vo.AccessoriesVo" resultMap="VoResultMap">
+        SELECT ta.*, tca.probability as probability
+        from tb_case tc
+             left join tb_case_accessories tca
+                   on tca.case_id = #{caseId}
+             left join tb_accessories ta
+                   on ta.id = tca.accessories_id
+        WHERE tc.id = #{caseId}
+    </select>
+
+    <select id="getAccsByRRId" resultType="com.cccase.casebackend.pojo.vo.AccessoriesVo" resultMap="VoResultMap">
+        SELECT ta.*
+        from tb_roll_room_accessories trra
+             left join tb_accessories ta
+                   on ta.id = trra.accessories_id and trra.roll_room_id = #{id}
+        WHERE trra.roll_room_id = #{id}
+    </select>
+</mapper>

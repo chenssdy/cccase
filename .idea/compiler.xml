@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="CaseBackend" />
+        <module name="CC_CASE" />
+        <module name="WebBackend" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="CaseBackend" target="1.8" />
+      <module name="CC_CASE" target="1.8" />
+      <module name="WebBackend" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="CC_CASE" options="-parameters" />
+      <module name="CaseBackend" options="-parameters" />
+      <module name="WebBackend" options="-parameters" />
+    </option>
+  </component>
+</project>

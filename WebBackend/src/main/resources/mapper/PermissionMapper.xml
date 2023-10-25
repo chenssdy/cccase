@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chendys.webbackend.mapper.PermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.chendys.webbackend.pojo.Permission">
+            <id property="id" column="id" jdbcType="OTHER"/>
+            <result property="permission" column="permission" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,permission,update_time,
+        create_time
+    </sql>
+
+
+
+    <select id="selectByAdminId" resultType="java.lang.String">
+        SELECT tp.permission FROM
+            tb_permission tp
+                LEFT JOIN tb_role_permission trp
+                          ON tp.id = trp.permission_id
+                LEFT JOIN tb_rolo tr
+                          ON tr.id = trp.role_id
+                LEFT JOIN tb_user_role tur
+                          ON tur.role_id = tr.id and tur.user_id = ${id}
+    </select>
+</mapper>

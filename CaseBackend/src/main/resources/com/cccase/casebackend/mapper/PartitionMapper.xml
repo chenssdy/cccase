@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cccase.casebackend.mapper.PartitionMapper">
+
+    <resultMap id="BaseResultMap" type="com.cccase.casebackend.pojo.Partition">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="sort" column="sort" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="pageResultMap" type="com.cccase.casebackend.pojo.vo.PartitionVo">
+        <id property="id" column="id" jdbcType="OTHER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <collection property="cases" ofType="com.cccase.casebackend.pojo.Case">
+            <id property="id" column="tcid" jdbcType="INTEGER"/>
+            <result property="name" column="cname" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DOUBLE"/>
+            <result property="coverUrl" column="cover_url" jdbcType="VARCHAR"/>
+            <result property="backgroundUrl" column="background_url" jdbcType="VARCHAR"/>
+            <result property="partitionId" column="partition_id" jdbcType="OTHER"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,sort,
+        update_time,create_time
+    </sql>
+
+
+    <select id="getPartitions" resultType="com.cccase.casebackend.pojo.vo.PartitionVo" resultMap="pageResultMap">
+        SELECT tp.id, tp.name, tp.sort, tp.update_time, tp.create_time, tc.id tcid, tc.name cname, tc.cover_url, tc.background_url, tc.partition_id, tc.status, tc.price
+        FROM `tb_partition` tp
+             left join tb_partition_case tpc
+                   on tp.id = tpc.partition_id
+             left join tb_case tc
+                   on tc.id = tpc.case_id
+    </select>
+</mapper>

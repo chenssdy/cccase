@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cccase.casebackend.mapper.IntegralExchangeMapper">
+
+    <resultMap id="BaseResultMap" type="com.cccase.casebackend.pojo.IntegralExchange">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="accessoriesId" column="accessories_id" jdbcType="INTEGER"/>
+            <result property="stock" column="stock" jdbcType="INTEGER"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="VoResultMap" type="com.cccase.casebackend.pojo.vo.IntegralExchangeVo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="accessoriesId" column="accessories_id" jdbcType="INTEGER"/>
+        <result property="stock" column="stock" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="integral" column="integral" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <association property="accessoriesVo" javaType="com.cccase.casebackend.pojo.vo.AccessoriesVo">
+            <id property="id" column="aid" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="imgUrl" column="img_url" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="wear" column="wear" jdbcType="INTEGER"/>
+            <result property="quality" column="quality" jdbcType="INTEGER"/>
+            <result property="buffId" column="buff_id" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,accessories_id,stock,
+        status,update_time,create_time
+    </sql>
+
+
+    <select id="getIEAccessories" resultType="com.cccase.casebackend.pojo.vo.IntegralExchangeVo" resultMap="VoResultMap">
+        SELECT tie.*, ta.id as aid, ta.name, ta.img_url, ta.price, ta.wear, ta.quality, ta.buff_id
+        FROM `tb_integral_exchange` tie
+             LEFT JOIN tb_accessories ta
+                   ON tie.accessories_id = ta.id
+    </select>
+</mapper>

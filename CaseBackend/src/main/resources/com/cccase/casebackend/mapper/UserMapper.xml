@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cccase.casebackend.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.cccase.casebackend.pojo.User">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="balance" column="balance" jdbcType="DECIMAL"/>
+            <result property="integral" column="integral" jdbcType="BIGINT"/>
+            <result property="lv" column="lv" jdbcType="INTEGER"/>
+            <result property="rechargeAmount" column="recharge_amount" jdbcType="DECIMAL"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="UserAccVoResultMap" type="com.cccase.casebackend.pojo.vo.UserBackpackVo">
+        <result property="backpackId" column="backpackId" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <association property="accessories" javaType="com.cccase.casebackend.pojo.vo.AccessoriesVo">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="imgUrl" column="img_url" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="wear" column="wear" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="quality" column="quality" jdbcType="INTEGER"/>
+            <result property="buffId" column="buff_id" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,phone,
+        password,lv,recharge_amount,
+        status,update_time,create_time
+    </sql>
+
+
+    <select id="getUserAccs" resultType="com.cccase.casebackend.pojo.vo.UserBackpackVo" resultMap="UserAccVoResultMap">
+        SELECT ta.*, tub.status as status, tub.id as backpackId
+        from tb_user tu
+             LEFT JOIN tb_user_backpack tub
+                   on tu.id = tub.user_id
+             LEFT JOIN tb_accessories ta
+                   on ta.id = tub.accessories_id
+        WHERE tu.id = #{userId}
+    </select>
+
+    <select id="getUsersByRRId" resultType="com.cccase.casebackend.pojo.User">
+        SELECT *
+        FROM tb_roll_room_participate trrp
+             LEFT JOIN tb_user tu
+                       ON trrp.user_id = tu.id
+        WHERE trrp.roll_room_id = #{id}
+    </select>
+</mapper>
